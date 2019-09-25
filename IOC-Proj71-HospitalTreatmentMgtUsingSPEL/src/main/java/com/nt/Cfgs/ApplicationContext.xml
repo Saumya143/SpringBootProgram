@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+	<!-- Date Cfg -->
+	<bean id="dt" class="java.util.Date" />
+
+	<!-- Dependent Bean Cfgs.. -->
+	<bean id="tc" class="com.nt.beans.Treatmentcharges">
+		<property name="cardiologyTreatment">
+			<set>
+				<value>Heart Valve Disease</value>
+				<value>Pericardits</value>
+				<value>Crdiomyopathesis</value>
+			</set>
+		</property>
+		<property name="cardiologytrtmntCharges">
+			<map>
+				<entry key="Heart Valve Disease">
+					<value>65000</value>
+				</entry>
+				<entry key="Crdiomyopathesis">
+					<value>56000</value>
+				</entry>
+			</map>
+		</property>
+
+		<property name="neurologyTreatment">
+			<set>
+				<value>Brain Tumor</value>
+				<value>Brain Transplant</value>
+				<value>Brain hammraze</value>
+			</set>
+		</property>
+		<property name="neurologytrtmntCharges">
+			<map>
+				<entry key="Brain Tumor">
+					<value>65000</value>
+				</entry>
+				<entry key="Brain hammraze">
+					<value>56000</value>
+				</entry>
+			</map>
+		</property>
+
+		<property name="angiplastyTreatment">
+			<set>
+				<value>Carotid angioplasty</value>
+				<value>Renal artery angioplasty</value>
+				<value>Venous angioplasty</value>
+			</set>
+		</property>
+		<property name="angioplastytrtmntCharges">
+			<map>
+				<entry key="Carotid angioplasty">
+					<value>65000</value>
+				</entry>
+				<entry key="Venous angioplasty">
+					<value>56000</value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<!-- target Bean Cfgs... -->
+	<bean id="patient" class="com.nt.beans.SeniorPatient">
+		<property name="pid"
+			value="#{T(java.lang.Math).random()*100.0}" />
+		<property name="pname" value="Raghuveer" />
+		<property name="cardiologyTrtmntCharges"
+			value="#{tc.cardiologytrtmntCharges['Heart Valve Disease']}" />
+		<property name="neurologyTrtmntCharges"
+			value="#{tc.neurologytrtmntCharges['Brain Tumor']}" />
+		<property name="angiplastyTrtmntCharges"
+			value="#{tc.angioplastytrtmntCharges['Carotid angioplasty']}" />
+		<property name="billDate" value="#{dt}" />
+		<property name="totalAmount"
+			value="#{tc.cardiologytrtmntCharges['Heart Valve Disease']+tc.neurologytrtmntCharges['Brain Tumor']+tc.angioplastytrtmntCharges['Carotid angioplasty']}" />
+	</bean>
+
+</beans>
